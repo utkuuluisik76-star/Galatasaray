@@ -1,0 +1,9 @@
+{
+  "name": "galatasaray-fan-concept",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node serve.mjs",
+    "test": "node --test test-squad-state.mjs test-community.mjs"
+  }
+}

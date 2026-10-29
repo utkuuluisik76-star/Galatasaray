@@ -1,0 +1,10 @@
+import fs from 'node:fs/promises';
+import sharp from 'sharp';
+const page='https://konyaspor.org.tr/basin-odasi';
+const html=await(await fetch(page)).text();await fs.writeFile('sources/konyaspor-press.html',html);
+const images=[...html.matchAll(/<img[^>]+>/g)].map(m=>m[0]);
+console.log(images.filter(i=>/logo/i.test(i)).slice(0,12));
+const fb='https://media.fenerbahce.org/FB/media/FB/Images/Logo/logo.png?ext=.png';
+const response=await fetch(fb);if(!response.ok)throw Error('Fenerbahçe logo '+response.status);
+await sharp(Buffer.from(await response.arrayBuffer())).resize(160,160,{fit:'inside'}).png().toFile('dist/media/fenerbahce.png');
+await fs.writeFile('sources/opponent-logos.json',JSON.stringify({fenerbahce:{page:'https://www.fenerbahce.org/',url:fb},konyaspor:{page}},null,2));
